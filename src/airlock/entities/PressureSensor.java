@@ -8,7 +8,7 @@ public class PressureSensor implements IPressureSensor {
 	
 	public PressureSensor(double initialPressure) throws PressureException {
             if (pressure < 0){
-                throw PressureException("Pressure is negative");    
+                throw new PressureException("Pressure is negative");    
             }
 	}
 	
@@ -18,7 +18,7 @@ public class PressureSensor implements IPressureSensor {
 	
 	public void setPressure(double newPressure) throws PressureException {
 	    if (newPressure < 0){
-                throw PressureException("Can't set pressure to be negative"); 
+                throw new PressureException("Can't set pressure to be negative"); 
             }
             pressure = newPressure;
 	}
