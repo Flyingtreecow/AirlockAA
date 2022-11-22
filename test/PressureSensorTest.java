@@ -37,44 +37,46 @@ public class PressureSensorTest {
     @After
     public void tearDown() {
     }
+    double validPressure = 2.0;
+    double invalidPressure = -2.0;
+    double pressureChange = 5.0;
     
     @Test(expected = PressureException.class)
     public void contructorTestNegativeVal() throws Exception {
-        PressureSensor negativeSensor = new PressureSensor(-2);
+        PressureSensor negativeSensor = new PressureSensor(invalidPressure);
     }
     
-    public void constructerInitiationTest() throws Exception {
-        PressureSensor Sensor = new PressureSensor(2);
-        Sensor.getPressure();
-        Sensor.setPressure(10);
+    public void constructerInitiationTest()  {
+        try {
+            PressureSensor sensor = new PressureSensor(validPressure);
+            sensor.getPressure();
+            sensor.setPressure(pressureChange);
+        }
+        catch (Exception e){
+            fail("Sensor not Initialised");
+        }
+        
     }
     
     @Test 
     public void getPressureTest() throws Exception{
-        double initialPressure = 2.0;
-        PressureSensor Sensor = new PressureSensor(initialPressure);
-        assertEquals(Sensor.getPressure(), initialPressure,0.01);
+        PressureSensor sensor = new PressureSensor(validPressure);
+        assertEquals(validPressure, sensor.getPressure(), 0.01);
         
-        double updatedPressure = 5.0;
-        Sensor.setPressure(updatedPressure);
-        assertEquals(Sensor.getPressure(), updatedPressure, 0.01);
-        
+        sensor.setPressure(pressureChange);
+        assertEquals(pressureChange, sensor.getPressure(), 0.01);
     }
     
     @Test(expected = PressureException.class)
     public void setNegativePressureTest() throws Exception{
-        PressureSensor Sensor = new PressureSensor(2);
-        Sensor.setPressure(-20);
+        PressureSensor sensor = new PressureSensor(validPressure);
+        sensor.setPressure(invalidPressure);
     }
     
     @Test
     public void updateInitPressureTest() throws Exception{
-        double updatePressure = 10.0;
-        PressureSensor Sensor = new PressureSensor(2);
-        Sensor.setPressure(updatePressure);
-        assertEquals(Sensor.getPressure(), updatePressure,0.01);
-        
-        
-    }
-        
+        PressureSensor sensor = new PressureSensor(validPressure);
+        sensor.setPressure(pressureChange);
+        assertEquals(pressureChange, sensor.getPressure(), 0.01);
+    }    
 }
