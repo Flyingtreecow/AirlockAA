@@ -10,7 +10,7 @@ public class Door implements IDoor{
 	IPressureSensor exSensor;
 	
 	private DoorState state;
-	private Double diffInPressure = inSensor.getPressure()- exSensor.getPressure();
+	private double diffInPressure; 
         
 	public Door(IPressureSensor exSensor, IPressureSensor inSensor, DoorState initialState) throws DoorException {
             try{
@@ -20,11 +20,12 @@ public class Door implements IDoor{
             catch(Exception e){
                throw new DoorException("Sensors are not valid");
             }
-            inSensor = this.inSensor;
-            exSensor = this.exSensor;
+            this.inSensor = inSensor;
+            this.exSensor = exSensor;
             state = initialState;
+            diffInPressure = Math.abs(inSensor.getPressure()- exSensor.getPressure());
             
-            if(state == DoorState.OPEN &&  (diffInPressure > TOLERANCE || diffInPressure < TOLERANCE)){
+            if(state == DoorState.OPEN &&  diffInPressure > TOLERANCE) {
                throw  new DoorException("Difference in pressures is too large");
             }
 	}
@@ -34,7 +35,7 @@ public class Door implements IDoor{
             if(state == DoorState.OPEN){
                throw  new DoorException("Door already open");
             }
-            if(state == DoorState.CLOSED && (diffInPressure > TOLERANCE || diffInPressure < TOLERANCE)){
+            if(state == DoorState.CLOSED && diffInPressure > TOLERANCE){
                throw  new DoorException("Pressure unequal");
             }
             state = DoorState.OPEN;
