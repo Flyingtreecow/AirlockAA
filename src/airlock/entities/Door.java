@@ -13,20 +13,17 @@ public class Door implements IDoor{
 	private double diffInPressure; 
         
 	public Door(IPressureSensor exSensor, IPressureSensor inSensor, DoorState initialState) throws DoorException {
-            try{
-               exSensor.getPressure();
-               inSensor.getPressure();
-            }
-            catch(Exception e){
-               throw new DoorException("Sensors are not valid");
-            }
+            if (exSensor == null || inSensor == null){
+                throw new DoorException("Sensors are not valid");
+            }  
+            
             this.inSensor = inSensor;
             this.exSensor = exSensor;
             state = initialState;
             diffInPressure = Math.abs(inSensor.getPressure()- exSensor.getPressure());
             
-            if(state == DoorState.OPEN &&  diffInPressure > TOLERANCE) {
-               throw  new DoorException("Difference in pressures is too large");
+            if(state == DoorState.OPEN && DiffInPressure()) {
+               throw  new DoorException("Door is open with too big of a difference in pressure");
             }
 	}
 	
@@ -35,7 +32,9 @@ public class Door implements IDoor{
             if(state == DoorState.OPEN){
                throw  new DoorException("Door already open");
             }
-            if(state == DoorState.CLOSED && diffInPressure > TOLERANCE){
+           
+            
+            if(state == DoorState.CLOSED && DiffInPressure()){
                throw  new DoorException("Pressure unequal");
             }
             state = DoorState.OPEN;
@@ -68,11 +67,15 @@ public class Door implements IDoor{
 	public boolean isClosed() {
 	    return state == DoorState.CLOSED;
 	}
+         public boolean  DiffInPressure (){
+            diffInPressure = Math.abs(inSensor.getPressure()- exSensor.getPressure());
+            return diffInPressure > TOLERANCE;
+        }
 
 	public String toString() {
 	    return String.format(
 	        "Door: state: %s, external pressure: %3.1f bar, internal pressure: %3.1f bar", 
 		state, exSensor.getPressure(), inSensor.getPressure());
 	}	
-
+       
 }

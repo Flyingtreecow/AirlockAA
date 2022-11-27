@@ -14,11 +14,12 @@ public class AirLock implements IAirLock{
 	private OperationMode mode;
 	
 
-	public AirLock(IDoor externalDoor, IDoor internalDoor, IPressureSensor lockSensor) {
+	public AirLock(IDoor externalDoor, IDoor internalDoor, IPressureSensor lockSensor, OperationMode mode ) {
             outerDoor = externalDoor;
             innerDoor = internalDoor;
             this.lockSensor = lockSensor;
-            mode = OperationMode.MANUAL;
+           
+            this.mode = mode;
             if (innerDoor.isClosed()&&outerDoor.isClosed()){
                 state = AirLockState.SEALED;
             } 
@@ -37,18 +38,15 @@ public class AirLock implements IAirLock{
                try{    
                   if (mode == OperationMode.AUTO){
                       if(innerDoor.isOpen()){
-                         innerDoor.close();
+                        closeInnerDoor();
                       }
-                      lockSensor.setPressure(outerDoor.getExternalPressure());
+                      equaliseWithEnvironmentPressure();
                   }
                   outerDoor.open();
                   state = AirLockState.UNSEALED;
                 }
                catch(DoorException e){
                   throw new AirLockException(new DoorException("Door malfunction"));
-               }
-               catch(PressureException e){
-                  throw new AirLockException(new PressureException("Pressure malfunction"));
                }
             }
 	}
@@ -75,18 +73,15 @@ public class AirLock implements IAirLock{
                try{    
                   if (mode == OperationMode.AUTO){
                       if(outerDoor.isOpen()){
-                         outerDoor.close();
+                        closeOuterDoor();
                       }
-                      lockSensor.setPressure(innerDoor.getInternalPressure());
+                      equaliseWithCabinPressure();
                   }
                   innerDoor.open();
                   state = AirLockState.UNSEALED;
                }
                catch(DoorException e){
-                  throw new AirLockException(new DoorException("Door malfunction"));
-               }
-               catch(PressureException e){
-                  throw new AirLockException(new PressureException("Pressure malfunction"));
+                  throw new AirLockException(new DoorException("InnerDoor Open malfunction"));
                }
             }
 	}
@@ -112,7 +107,7 @@ public class AirLock implements IAirLock{
             else {
                 try {
                     lockSensor.setPressure(innerDoor.getInternalPressure());
-                } 
+                     } 
                 catch (PressureException e) {
                     throw new AirLockException(new PressureException("Pressure sensor malfunction"));
                 }
@@ -137,26 +132,26 @@ public class AirLock implements IAirLock{
 
 	@Override
 	public void toggleOperationMode() throws AirLockException{
-            if ( state == AirLockState.UNSEALED){
+            if (state == AirLockState.UNSEALED){
                 throw new AirLockException("Airlock is currently unsealed");
             }
             else{
-               if (state == AirLockState.UNSEALED){
-                   state = AirLockState.SEALED;
-               }
-               if (state == AirLockState.SEALED){
-                   state = AirLockState.UNSEALED;
-               }
+                if (mode == OperationMode.MANUAL){
+                    mode = OperationMode.AUTO;
+                }
+                else{
+                    mode = OperationMode.MANUAL;
+                }
             }
 	}
         @Override
 	public boolean isInManualMode() {
-		return mode == OperationMode.MANUAL;
+	    return mode == OperationMode.MANUAL;
 	}
 
 	@Override
 	public boolean isInAutoMode() {
-		return mode == OperationMode.AUTO;
+	    return mode == OperationMode.AUTO;
 	}
 	
 	@Override
@@ -173,18 +168,18 @@ public class AirLock implements IAirLock{
 
 	@Override
 	public boolean isSealed() {
-		return state == AirLockState.SEALED;
+	    return state == AirLockState.SEALED;
 	}
 
 	@Override
 	public boolean isUnsealed() {
-		return state == AirLockState.UNSEALED;
+	    return state == AirLockState.UNSEALED;
 	}
 
 	public String toString() {
-		return String.format(
-			"Airlock: state: %s, mode: %s", 
-			state, mode);
+	    return String.format(
+		   "Airlock: state: %s, mode: %s", 
+	            state, mode);
 	}
 	
 

@@ -51,28 +51,37 @@ public class DoorTest {
     @Test (expected = DoorException.class)
     public void doorValidSensorTest()throws PressureException,DoorException{
         PressureSensor extPressureSensor = new  PressureSensor(1);
-        PressureSensor intPressureSensor;
+        PressureSensor intPressureSensor = null;
         Door door = new Door(extPressureSensor, intPressureSensor, DoorState.OPEN);
     }
+    
     @Test (expected = DoorException.class)
     public void opendoorPressureUnequalTest()throws PressureException,DoorException{
-        PressureSensor extPressureSensor = new  PressureSensor(1);
+        PressureSensor extPressureSensor = new PressureSensor(1);
         PressureSensor intPressureSensor = new PressureSensor(5);
         Door door = new Door(extPressureSensor, intPressureSensor, DoorState.OPEN);
     }
     
     @Test 
+    
     public void validDoorTest()throws PressureException,DoorException{
-        PressureSensor extPressureSensor = new  PressureSensor(1);
+        
+        PressureSensor extPressureSensor = new PressureSensor(1);
         PressureSensor intPressureSensor = new PressureSensor(1);
         Door door = new Door(extPressureSensor, intPressureSensor, DoorState.OPEN);
-        door.getExternalPressure();
-        door.isOpen(); 
+        try{
+            door.getExternalPressure();
+            door.isOpen(); 
+        }
+        catch(Exception e){
+            fail("Door is not valid");
+        }
+        
     }
     
     @Test (expected = DoorException.class)
     public void doorAlreadyOpenTest()throws PressureException,DoorException{
-        PressureSensor extPressureSensor = new  PressureSensor(1);
+        PressureSensor extPressureSensor = new PressureSensor(1);
         PressureSensor intPressureSensor = new PressureSensor(1);
         Door door = new Door(extPressureSensor, intPressureSensor, DoorState.OPEN);
         
@@ -80,7 +89,7 @@ public class DoorTest {
     }
      @Test (expected = DoorException.class)
     public void doorOpenWhenPressuresUnequalTest()throws PressureException,DoorException{
-        PressureSensor extPressureSensor = new  PressureSensor(1);
+        PressureSensor extPressureSensor = new PressureSensor(1);
         PressureSensor intPressureSensor = new PressureSensor(5);
         Door door = new Door(extPressureSensor, intPressureSensor, DoorState.CLOSED);
         
@@ -89,7 +98,7 @@ public class DoorTest {
     
     @Test 
     public void doorOpenTest()throws PressureException,DoorException{
-        PressureSensor extPressureSensor = new  PressureSensor(1);
+        PressureSensor extPressureSensor = new PressureSensor(1);
         PressureSensor intPressureSensor = new PressureSensor(1);
         Door door = new Door(extPressureSensor, intPressureSensor, DoorState.CLOSED);
         
@@ -105,9 +114,10 @@ public class DoorTest {
     
         door.close();
     }
+    
     @Test 
     public void doorCloseTest()throws PressureException,DoorException{
-        PressureSensor extPressureSensor = new  PressureSensor(1);
+        PressureSensor extPressureSensor = new PressureSensor(1);
         PressureSensor intPressureSensor = new PressureSensor(1);
         Door door = new Door(extPressureSensor, intPressureSensor, DoorState.OPEN);
         
@@ -115,18 +125,19 @@ public class DoorTest {
         assertEquals(true, door.isClosed());
     }
     
-    
     @Test
     public void doorGetExtPressureTest()throws PressureException,DoorException{
-        PressureSensor extPressureSensor = new  PressureSensor(5);
+        PressureSensor extPressureSensor = new PressureSensor(5);
         PressureSensor intPressureSensor = new PressureSensor(1);
         Door door = new Door(extPressureSensor, intPressureSensor, DoorState.CLOSED);
         
         assertEquals(5, door.getExternalPressure(), 0.01);
         
     }
+    
+    @Test
     public void doorGetIntPressureTest()throws PressureException,DoorException{
-        PressureSensor extPressureSensor = new  PressureSensor(5);
+        PressureSensor extPressureSensor = new PressureSensor(5);
         PressureSensor intPressureSensor = new PressureSensor(1);
         Door door = new Door(extPressureSensor, intPressureSensor, DoorState.CLOSED);
         
@@ -136,7 +147,7 @@ public class DoorTest {
     
     @Test
     public void doorIsOpenTest()throws PressureException,DoorException{
-        PressureSensor extPressureSensor = new  PressureSensor(1);
+        PressureSensor extPressureSensor = new PressureSensor(1);
         PressureSensor intPressureSensor = new PressureSensor(1);
         Door door = new Door(extPressureSensor, intPressureSensor, DoorState.OPEN);
         
@@ -146,9 +157,10 @@ public class DoorTest {
         
        
     }
-     @Test
+    
+    @Test
     public void doorIsClosedTest()throws PressureException,DoorException{
-        PressureSensor extPressureSensor = new  PressureSensor(1);
+        PressureSensor extPressureSensor = new PressureSensor(1);
         PressureSensor intPressureSensor = new PressureSensor(1);
         Door door = new Door(extPressureSensor, intPressureSensor, DoorState.CLOSED);
         
@@ -156,4 +168,5 @@ public class DoorTest {
         door.open();
         assertFalse(door.isClosed());
     }
+  
 }
