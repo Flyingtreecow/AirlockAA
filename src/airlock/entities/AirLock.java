@@ -14,12 +14,12 @@ public class AirLock implements IAirLock{
 	private OperationMode mode;
 	
 
-	public AirLock(IDoor externalDoor, IDoor internalDoor, IPressureSensor lockSensor, OperationMode mode ) {
+	public AirLock(IDoor externalDoor, IDoor internalDoor, IPressureSensor lockSensor ) {
             outerDoor = externalDoor;
             innerDoor = internalDoor;
             this.lockSensor = lockSensor;
            
-            this.mode = mode;
+            mode = OperationMode.MANUAL;
             if (innerDoor.isClosed()&&outerDoor.isClosed()){
                 state = AirLockState.SEALED;
             } 
@@ -95,7 +95,7 @@ public class AirLock implements IAirLock{
                }
             }
             catch(DoorException e){
-               throw new AirLockException(new DoorException("Door malfunction"));
+               throw new AirLockException(new DoorException("InnerDoor closing malfunction"));
             }
 	}
 	
@@ -109,7 +109,7 @@ public class AirLock implements IAirLock{
                     lockSensor.setPressure(innerDoor.getInternalPressure());
                      } 
                 catch (PressureException e) {
-                    throw new AirLockException(new PressureException("Pressure sensor malfunction"));
+                    throw new AirLockException(e);
                 }
              
             }
@@ -125,7 +125,7 @@ public class AirLock implements IAirLock{
                     lockSensor.setPressure(outerDoor.getExternalPressure());
                 } 
                 catch (PressureException e) {
-                    throw new AirLockException(new PressureException("Pressure sensor malfunction"));
+                    throw new AirLockException(e);
                 }
             }
 	}
