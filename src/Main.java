@@ -27,33 +27,7 @@ public class Main {
 			IAirLock airLock = new AirLock(exteriorDoor, interiorDoor, lockSensor);
 			
 			String menuFormatString = 
-			"""
-			
-			%s
-			Exterior %s 
-			Lock %s 
-			Interior %s
-			Exterior %s, 
-			Interior %s
-			
-			Select option:
-			    OX - open external door
-			    OI - open internal door
-	
-			    CX - close external door
-			    CI - close internal door
-	
-			    SX - set external pressure
-			    SI - set internal pressure
-			    
-			    EX - equalise lock with external pressure
-			    EI - equalise lock with internal pressure
-			    
-			    TM - toggle operation mode
-			    
-			    Q  - quit
-			
-			Selection: """;
+			"%s \n Exterior %s \n Lock %s \n Interior %s \n Exterior %s, \n Interior %s \n Select option: \n OX - open external door \n OI - open internal door \n \n CX - close external door \n CI - close internal door \n \n SX - set external pressure \n SI - set internal pressure \n \n EX - equalise lock with external pressure \n EI - equalise lock with internal pressure \n \n TM - toggle operation mode \n \n  Q  - quit 	Selection: ";
 			
 			Scanner scanner = new Scanner(System.in);
 			//testLoop
@@ -70,7 +44,7 @@ public class Main {
 					
 					ans = scanner.nextLine();
 					
-					switch (ans.toUpperCase().strip()) {
+					switch (ans.toUpperCase()) {
 					
 						case "OX" :					
 							airLock.openOuterDoor();
