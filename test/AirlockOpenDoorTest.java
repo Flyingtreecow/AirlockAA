@@ -138,7 +138,8 @@ public class AirlockOpenDoorTest {
        
         AirLock airlock = new AirLock(externalDoor, internalDoor, lockSensor);
         
-        try{airlock.openOuterDoor();}
+        try{airlock.openOuterDoor();
+        }
         catch(AirLockException e){
             assertTrue(airlock.isSealed());
         }

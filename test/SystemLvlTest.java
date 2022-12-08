@@ -45,15 +45,12 @@ public class SystemLvlTest {
     @Test
     //Pass through airlock in auto mode from inside to outside when external environment pressure is less than internal cabin pressure
     public void Systemtest1()throws  PressureException,DoorException,AirLockException{
-        PressureSensor extPressureSensor = new PressureSensor(1);
-        PressureSensor intPressureSensor = new PressureSensor(1);
-        Door externalDoor = new Door(extPressureSensor, intPressureSensor, DoorState.CLOSED);
-       
-        PressureSensor extPressureSensor2 = new PressureSensor(5);
-        PressureSensor intPressureSensor2 = new PressureSensor(5);
-        Door internalDoor = new Door(extPressureSensor2, intPressureSensor2, DoorState.CLOSED);
-       
         PressureSensor lockSensor = new PressureSensor(1);
+        PressureSensor exteriorSensor = new PressureSensor(1);
+        PressureSensor interiorSensor = new PressureSensor(5);
+       
+        Door externalDoor = new Door(exteriorSensor, lockSensor, DoorState.CLOSED); 
+        Door internalDoor = new Door(interiorSensor, lockSensor, DoorState.CLOSED);
        
         AirLock airlock = new AirLock(externalDoor, internalDoor, lockSensor);
         airlock.toggleOperationMode();
@@ -69,15 +66,12 @@ public class SystemLvlTest {
     @Test
     //Pass through airlock in auto mode from outside to inside when external environment pressure is greater than internal cabin pressure
     public void Systemtest2()throws  PressureException,DoorException,AirLockException{
-        PressureSensor extPressureSensor = new PressureSensor(5);
-        PressureSensor intPressureSensor = new PressureSensor(5);
-        Door externalDoor = new Door(extPressureSensor, intPressureSensor, DoorState.CLOSED);
-       
-        PressureSensor extPressureSensor2 = new PressureSensor(1);
-        PressureSensor intPressureSensor2 = new PressureSensor(1);
-        Door internalDoor = new Door(extPressureSensor2, intPressureSensor2, DoorState.CLOSED);
-       
         PressureSensor lockSensor = new PressureSensor(1);
+        PressureSensor exteriorSensor = new PressureSensor(5);
+        PressureSensor interiorSensor = new PressureSensor(1);
+       
+        Door externalDoor = new Door(exteriorSensor, lockSensor, DoorState.CLOSED); 
+        Door internalDoor = new Door(interiorSensor, lockSensor, DoorState.CLOSED);
        
         AirLock airlock = new AirLock(externalDoor, internalDoor, lockSensor);
         airlock.toggleOperationMode();
@@ -94,15 +88,12 @@ public class SystemLvlTest {
     @Test
     //Pass through airlock from inside to outside in manual mode when external environment pressure is greater than internal cabin pressure
     public void Systemtest3()throws  PressureException,DoorException,AirLockException{
-        PressureSensor extPressureSensor = new PressureSensor(5);
-        PressureSensor intPressureSensor = new PressureSensor(5);
-        Door externalDoor = new Door(extPressureSensor, intPressureSensor, DoorState.CLOSED);
-       
-        PressureSensor extPressureSensor2 = new PressureSensor(1);
-        PressureSensor intPressureSensor2 = new PressureSensor(1);
-        Door internalDoor = new Door(extPressureSensor2, intPressureSensor2, DoorState.CLOSED);
-       
         PressureSensor lockSensor = new PressureSensor(1);
+        PressureSensor exteriorSensor = new PressureSensor(5);
+        PressureSensor interiorSensor = new PressureSensor(1);
+       
+        Door externalDoor = new Door(exteriorSensor, lockSensor, DoorState.CLOSED); 
+        Door internalDoor = new Door(interiorSensor, lockSensor, DoorState.CLOSED);
        
         AirLock airlock = new AirLock(externalDoor, internalDoor, lockSensor);
         try{
@@ -121,15 +112,12 @@ public class SystemLvlTest {
     @Test
     //Pass through airlock from outside to inside in manual mode when external environment pressure is less than internal cabin pressure
      public void Systemtest4()throws  PressureException,DoorException,AirLockException{
-        PressureSensor extPressureSensor = new PressureSensor(1);
-        PressureSensor intPressureSensor = new PressureSensor(1);
-        Door externalDoor = new Door(extPressureSensor, intPressureSensor, DoorState.CLOSED);
+         PressureSensor lockSensor = new PressureSensor(1);
+        PressureSensor exteriorSensor = new PressureSensor(1);
+        PressureSensor interiorSensor = new PressureSensor(5);
        
-        PressureSensor extPressureSensor2 = new PressureSensor(5);
-        PressureSensor intPressureSensor2 = new PressureSensor(5);
-        Door internalDoor = new Door(extPressureSensor2, intPressureSensor2, DoorState.CLOSED);
-       
-        PressureSensor lockSensor = new PressureSensor(1);
+        Door externalDoor = new Door(exteriorSensor, lockSensor, DoorState.CLOSED); 
+        Door internalDoor = new Door(interiorSensor, lockSensor, DoorState.CLOSED);
        
         AirLock airlock = new AirLock(externalDoor, internalDoor, lockSensor);
         try{
